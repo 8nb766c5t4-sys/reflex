@@ -1,1004 +1,1926 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="RéflexeSport" />
-  <meta name="theme-color" content="#0b0f17" />
-  <title>RéflexeSport iPhone — Réflexes Visuels</title>
-  <style>
-    :root {
-      --bg: #0b0f17;
-      --surface: #131a26;
-      --surface-2: #1b2434;
-      --border: rgba(255, 255, 255, 0.09);
-      --text: #f3f6fb;
-      --muted: #93a0b8;
-      --accent: #22d3ee;
-      --accent-2: #a3e635;
-      --danger: #f43f5e;
-      --warn: #f59e0b;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RéflexeSport">
+    <meta name="theme-color" content="#050810">
+    <title>RéflexeSport iPhone — Entraînement Réflexes Visuels & Podium Top 3</title>
+    <style>
+        :root {
+            --bg-950: #050810;
+            --bg-900: #0b1120;
+            --bg-850: #11192e;
+            --bg-800: #17223d;
+            --border-700: #243356;
+            --text-100: #f8fafc;
+            --text-300: #cbd5e1;
+            --text-400: #94a3b8;
+            --text-500: #64748b;
+            --emerald-400: #34d399;
+            --volt-400: #a3e635;
+            --cyan-400: #22d3ee;
+            --amber-300: #fcd34d;
+            --amber-400: #fbbf24;
+            --amber-500: #f59e0b;
+            --red-400: #f87171;
+            --red-500: #ef4444;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      -webkit-user-select: none;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-      height: 100dvh;
-      overflow: hidden;
-      overscroll-behavior: none;
-    }
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+            overscroll-behavior: none;
+            background-color: var(--bg-950);
+            color: var(--text-100);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        }
 
-    .app {
-      max-width: 500px;
-      margin: 0 auto;
-      height: 100dvh;
-      padding: calc(8px + var(--safe-top)) 12px calc(10px + var(--safe-bottom));
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+            font-variant-numeric: tabular-nums;
+        }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 7px 10px;
-      flex-shrink: 0;
-    }
+        button, select, input {
+            font-family: inherit;
+        }
 
-    .brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+        }
 
-    .brand-badge {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #061018;
-      font-weight: 900;
-      font-size: 14px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
+        .hidden {
+            display: none !important;
+        }
 
-    .brand-title {
-      font-weight: 800;
-      font-size: 15px;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+        .app-shell {
+            max-width: 500px;
+            margin: 0 auto;
+            height: 100dvh;
+            padding: calc(8px + var(--safe-top)) 12px calc(10px + var(--safe-bottom));
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-    .top-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .app-header {
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            border-radius: 15px;
+            padding: 7px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-shrink: 0;
+        }
 
-    .icon-btn, .podium-btn {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      border-radius: 11px;
-      height: 34px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
 
-    .icon-btn { width: 34px; font-size: 15px; }
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--emerald-400), var(--cyan-400));
+            color: #050810;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
 
-    .podium-btn {
-      padding: 0 10px;
-      border-color: rgba(251, 191, 36, 0.38);
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(245, 158, 11, 0.08));
-      color: #fde68a;
-      white-space: nowrap;
-    }
+        .brand-title {
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-    .controls {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      flex-shrink: 0;
-    }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
-    .modes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .btn-podium-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            padding: 0 10px;
+            border-radius: 11px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.24), rgba(245, 158, 11, 0.12));
+            border: 1px solid rgba(251, 191, 36, 0.6);
+            color: var(--amber-300);
+            white-space: nowrap;
+        }
 
-    .mode-pill {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--muted);
-      border-radius: 10px;
-      padding: 7px 4px;
-      font-size: 12px;
-      font-weight: 700;
-      text-align: center;
-      cursor: pointer;
-    }
+        .podium-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 19px;
+            height: 19px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: var(--amber-400);
+            color: #050810;
+            font-size: 0.7rem;
+            font-weight: 900;
+        }
 
-    .mode-pill.active { background: rgba(34, 211, 238, 0.16); border-color: var(--accent); color: var(--text); }
+        .btn-sound {
+            width: 34px;
+            height: 34px;
+            border-radius: 11px;
+            background: var(--bg-850);
+            border: 1px solid var(--border-700);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
 
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
-    .seg-group {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: var(--bg);
-      padding: 2px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-    }
+        .mode-card {
+            text-align: center;
+            padding: 7px 4px;
+            border-radius: 12px;
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            transition: all 0.15s ease;
+        }
 
-    .seg-btn {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 2px;
-      border-radius: 7px;
-      cursor: pointer;
-    }
+        .mode-card.active {
+            background: linear-gradient(145deg, var(--bg-850), var(--bg-800));
+            border-color: var(--emerald-400);
+            box-shadow: 0 4px 14px rgba(52, 211, 153, 0.18);
+        }
 
-    .seg-btn.active { background: var(--surface-2); color: var(--text); }
+        .mode-num {
+            display: block;
+            font-size: 0.64rem;
+            font-weight: 900;
+            color: var(--emerald-400);
+            margin-bottom: 1px;
+        }
 
-    .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; flex-shrink: 0; }
+        .mode-card-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--text-100);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
 
-    .stat-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 6px 4px;
-      text-align: center;
-    }
+        .config-panel {
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            border-radius: 14px;
+            padding: 7px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
-    .stat-val { font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
-    .stat-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+        .config-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
 
-    .arena {
-      flex: 1;
-      min-height: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow: hidden;
-      touch-action: manipulation;
-    }
+        .pill-group {
+            display: inline-flex;
+            background: var(--bg-950);
+            padding: 3px;
+            border-radius: 10px;
+            border: 1px solid var(--border-700);
+            gap: 2px;
+            flex: 1;
+        }
 
-    .arena.touch-flash { box-shadow: inset 0 0 0 2px var(--accent); }
+        .pill-btn {
+            flex: 1;
+            padding: 5px 4px;
+            border-radius: 7px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-400);
+            text-align: center;
+            white-space: nowrap;
+        }
 
-    .reaction-pad {
-      flex: 1;
-      border-radius: 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 14px;
-      background: var(--surface-2);
-      border: 2px solid rgba(255, 255, 255, 0.08);
-      cursor: pointer;
-    }
+        .pill-btn.active-emerald {
+            background: var(--emerald-400);
+            color: #050810;
+            font-weight: 800;
+        }
 
-    .reaction-pad.wait { background: rgba(244, 63, 94, 0.22); border-color: var(--danger); }
-    .reaction-pad.go { background: rgba(163, 230, 53, 0.28); border-color: var(--accent-2); }
-    .reaction-big { font-size: 26px; font-weight: 900; }
-    .reaction-sub { margin-top: 6px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+        .pill-btn.active-cyan {
+            background: var(--cyan-400);
+            color: #050810;
+            font-weight: 800;
+        }
 
-    .stroop-top {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
+        .select-field {
+            background: var(--bg-950);
+            border: 1px solid var(--border-700);
+            color: var(--text-100);
+            font-size: 0.74rem;
+            font-weight: 800;
+            padding: 5px 8px;
+            border-radius: 9px;
+            outline: none;
+        }
 
-    .stroop-rule {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      background: rgba(34, 211, 238, 0.12);
-      padding: 3px 9px;
-      border-radius: 999px;
-    }
+        .kpi-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
-    .stroop-word { font-size: clamp(30px, 8vw, 40px); font-weight: 900; line-height: 1.1; }
+        .kpi-mini {
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            border-radius: 11px;
+            padding: 6px 4px;
+            text-align: center;
+        }
 
-    .thumb-choices {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      flex-shrink: 0;
-    }
+        .kpi-mini-lbl {
+            font-size: 0.58rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-400);
+        }
 
-    .thumb-btn {
-      height: 50px;
-      border-radius: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: var(--surface-2);
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+        .kpi-mini-val {
+            font-size: 0.88rem;
+            font-weight: 900;
+            margin-top: 1px;
+        }
 
-    .thumb-btn:active { transform: scale(0.97); }
+        .arena-wrapper {
+            flex: 1;
+            min-height: 0;
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-    .periph-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      flex-shrink: 0;
-    }
+        .arena-topbar {
+            padding: 7px 12px;
+            background: var(--bg-850);
+            border-bottom: 1px solid var(--border-700);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
 
-    .periph-wrap {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .arena-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
 
-    .periph-grid {
-      display: grid;
-      gap: 6px;
-      width: min(100%, 38dvh);
-      aspect-ratio: 1 / 1;
-    }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-500);
+        }
 
-    .periph-cell {
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: var(--surface-2);
-      color: var(--text);
-      font-weight: 900;
-      font-size: 14px;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-    }
+        .arena-stage {
+            flex: 1;
+            min-height: 0;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            touch-action: manipulation;
+            background-image:
+                linear-gradient(to right, rgba(36, 51, 86, 0.22) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(36, 51, 86, 0.22) 1px, transparent 1px);
+            background-size: 26px 26px;
+        }
 
-    .periph-cell.center-fix { background: rgba(34, 211, 238, 0.12); border-color: rgba(34, 211, 238, 0.45); color: var(--accent); cursor: default; }
-    .periph-cell.target { background: rgba(163, 230, 53, 0.25); border-color: var(--accent-2); color: #ecfccb; }
-    .periph-cell.hit { background: rgba(34, 211, 238, 0.28); border-color: var(--accent); }
-    .periph-cell.miss { background: rgba(244, 63, 94, 0.28); border-color: var(--danger); }
+        .arena-stage.waiting-red { background-color: rgba(239, 68, 68, 0.16); }
+        .arena-stage.go-green { background-color: rgba(52, 211, 153, 0.16); }
 
-    .cta-btn {
-      width: 100%;
-      height: 46px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #051018;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
+        @keyframes popIn {
+            0% { transform: scale(0.76); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
-    .cta-btn.stop { background: var(--danger); color: #fff; }
+        .circle-wait {
+            width: 124px;
+            height: 124px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.22);
+            border: 3px solid var(--red-500);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fecaca;
+            font-weight: 900;
+        }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 7, 13, 0.82);
-      backdrop-filter: blur(6px);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 12px 12px calc(14px + var(--safe-bottom));
-      z-index: 50;
-    }
+        .circle-go {
+            width: 136px;
+            height: 136px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--emerald-400), var(--volt-400));
+            border: 3px solid #ffffff;
+            color: #050810;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            box-shadow: 0 0 34px rgba(52, 211, 153, 0.65);
+            animation: popIn 0.14s ease-out;
+        }
 
-    .modal-backdrop.open { display: flex; }
+        .stroop-stimulus-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: popIn 0.14s ease-out;
+        }
 
-    .modal {
-      width: 100%;
-      max-width: 500px;
-      max-height: 86dvh;
-      overflow-y: auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        .stroop-rule-tag {
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(34, 211, 238, 0.14);
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            color: var(--cyan-400);
+        }
 
-    .modal-head { display: flex; align-items: center; justify-content: space-between; }
-    .modal-title { font-size: 17px; font-weight: 900; }
+        .stroop-rule-tag.inverted {
+            background: rgba(251, 191, 36, 0.16);
+            border-color: rgba(251, 191, 36, 0.45);
+            color: var(--amber-300);
+        }
 
-    .close-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+        .stroop-word-display {
+            font-size: clamp(2rem, 8.5vw, 3rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            border-radius: 16px;
+            background: rgba(5, 8, 16, 0.92);
+            border: 1px solid var(--border-700);
+        }
 
-    .record-banner {
-      background: rgba(251, 191, 36, 0.14);
-      border: 1px solid rgba(251, 191, 36, 0.45);
-      border-radius: 13px;
-      padding: 10px;
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-    }
+        .stroop-arrow-display {
+            width: 96px;
+            height: 96px;
+            border-radius: 20px;
+            background: rgba(5, 8, 16, 0.92);
+            border: 2px solid var(--border-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.4rem;
+            font-weight: 900;
+        }
 
-    .record-banner.show { display: flex; }
-    .record-input-row { display: flex; gap: 8px; }
+        .stroop-controls-bar {
+            padding: 8px 10px;
+            background: var(--bg-850);
+            border-top: 1px solid var(--border-700);
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            flex-shrink: 0;
+        }
 
-    .name-input {
-      flex: 1;
-      height: 42px;
-      border-radius: 10px;
-      border: 1px solid rgba(251, 191, 36, 0.5);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 700;
-      padding: 0 11px;
-      outline: none;
-    }
+        .stroop-choice-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 46px;
+            border-radius: 12px;
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
 
-    .podium-list { display: flex; flex-direction: column; gap: 7px; }
+        .stroop-choice-btn:active:not(:disabled) {
+            transform: scale(0.96);
+            border-color: var(--cyan-400);
+            background: var(--bg-800);
+        }
 
-    .podium-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 9px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 9px 11px;
-    }
+        .stroop-choice-btn:disabled {
+            opacity: 0.4;
+        }
 
-    .podium-row.rank-1 { border-color: rgba(251, 191, 36, 0.45); }
-    .podium-row.rank-2 { border-color: rgba(203, 213, 225, 0.35); }
-    .podium-row.rank-3 { border-color: rgba(217, 119, 6, 0.4); }
-    .rank-medal { font-size: 19px; width: 26px; text-align: center; }
-    .podium-info { flex: 1; min-width: 0; }
-    .podium-name { font-weight: 800; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .podium-score { font-size: 11px; color: var(--accent); font-weight: 700; }
+        .periph-grid {
+            display: grid;
+            gap: 6px;
+            width: min(100%, 34dvh);
+            aspect-ratio: 1 / 1;
+            position: relative;
+        }
 
-    .small-btn {
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      border-radius: 9px;
-      padding: 6px 9px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+        .periph-cell {
+            border-radius: 10px;
+            background: rgba(5, 8, 16, 0.78);
+            border: 1px solid var(--border-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .small-btn.danger { color: #fda4af; border-color: rgba(244, 63, 94, 0.35); }
-  </style>
+        .periph-target {
+            width: 100%;
+            height: 100%;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--emerald-400), var(--cyan-400));
+            border: 2px solid #ffffff;
+            color: #050810;
+            font-weight: 900;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.55);
+            animation: popIn 0.12s ease-out;
+        }
+
+        .periph-fixation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(34, 211, 238, 0.65);
+            background: rgba(5, 8, 16, 0.88);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .periph-fixation::after {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan-400);
+        }
+
+        .btn-start, .btn-stop {
+            width: 100%;
+            height: 46px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--emerald-400), var(--volt-400));
+            color: #050810;
+            box-shadow: 0 6px 18px rgba(52, 211, 153, 0.28);
+        }
+
+        .btn-stop {
+            background: var(--red-500);
+            color: #ffffff;
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(3, 6, 14, 0.86);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 12px 12px calc(14px + var(--safe-bottom));
+        }
+
+        .modal-window {
+            background: var(--bg-900);
+            border: 1px solid var(--border-700);
+            border-radius: 22px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 88dvh;
+            overflow-y: auto;
+            padding: 16px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .modal-title {
+            font-size: 1.12rem;
+            font-weight: 900;
+        }
+
+        .modal-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-400);
+            margin-top: 2px;
+        }
+
+        .modal-close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: var(--bg-850);
+            border: 1px solid var(--border-700);
+            color: var(--text-300);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .new-record-banner {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.22), rgba(52, 211, 153, 0.14));
+            border: 1px solid rgba(251, 191, 36, 0.6);
+            border-radius: 15px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .new-record-title {
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: var(--amber-300);
+        }
+
+        .new-record-desc {
+            font-size: 0.74rem;
+            color: var(--text-300);
+            margin-top: 2px;
+        }
+
+        .record-form-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .text-input {
+            flex: 1;
+            min-width: 0;
+            background: var(--bg-950);
+            border: 1px solid var(--border-700);
+            border-radius: 11px;
+            padding: 9px 12px;
+            color: var(--text-100);
+            font-size: 0.95rem;
+            font-weight: 700;
+            outline: none;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .btn-gold {
+            padding: 9px 14px;
+            border-radius: 11px;
+            font-size: 0.78rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--amber-300), var(--amber-500));
+            color: #050810;
+            flex-shrink: 0;
+        }
+
+        .podium-selectors {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .podium-tabs-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 4px;
+            background: var(--bg-950);
+            padding: 3px;
+            border-radius: 10px;
+            border: 1px solid var(--border-700);
+        }
+
+        .podium-stage {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            align-items: end;
+            padding-top: 6px;
+            margin-bottom: 12px;
+        }
+
+        .podium-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .podium-player-info {
+            width: 100%;
+            padding-bottom: 6px;
+        }
+
+        .podium-medal { font-size: 1.2rem; display: block; }
+        .podium-medal.first { font-size: 1.45rem; }
+
+        .podium-name {
+            font-size: 0.78rem;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .podium-name.gold { color: var(--amber-300); font-size: 0.86rem; }
+        .podium-metric { font-size: 0.7rem; font-weight: 800; color: var(--text-300); }
+
+        .podium-step {
+            width: 100%;
+            border-radius: 13px 13px 5px 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-top: 2px solid;
+            border-left: 1px solid;
+            border-right: 1px solid;
+        }
+
+        .podium-step.rank-1 {
+            height: 86px;
+            background: linear-gradient(180deg, rgba(251, 191, 36, 0.28), rgba(217, 119, 6, 0.08));
+            border-color: rgba(251, 191, 36, 0.65);
+        }
+
+        .podium-step.rank-2 {
+            height: 66px;
+            background: linear-gradient(180deg, rgba(203, 213, 225, 0.2), rgba(100, 116, 139, 0.07));
+            border-color: rgba(203, 213, 225, 0.5);
+        }
+
+        .podium-step.rank-3 {
+            height: 54px;
+            background: linear-gradient(180deg, rgba(217, 119, 6, 0.22), rgba(146, 64, 14, 0.08));
+            border-color: rgba(245, 158, 11, 0.48);
+        }
+
+        .step-num { font-size: 1.25rem; font-weight: 900; }
+        .step-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; }
+
+        .podium-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .podium-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 11px;
+            background: var(--bg-950);
+            border: 1px solid var(--border-700);
+            font-size: 0.78rem;
+        }
+
+        .podium-row.empty { border-style: dashed; color: var(--text-500); }
+        .podium-row-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+        .rank-pill {
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .rank-pill.r1 { background: rgba(251, 191, 36, 0.16); color: var(--amber-300); border: 1px solid rgba(251, 191, 36, 0.4); }
+        .rank-pill.r2 { background: rgba(203, 213, 225, 0.14); color: #e2e8f0; border: 1px solid rgba(203, 213, 225, 0.35); }
+        .rank-pill.r3 { background: rgba(217, 119, 6, 0.16); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.35); }
+
+        .btn-icon-edit {
+            padding: 5px 8px;
+            border-radius: 8px;
+            background: var(--bg-850);
+            border: 1px solid var(--border-700);
+            color: var(--text-300);
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .podium-footer-bar {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-700);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .btn-reset-cat {
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+        }
+
+        .btn-secondary {
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: var(--bg-850);
+            border: 1px solid var(--border-700);
+            color: var(--text-300);
+        }
+
+        .summary-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .summary-stat-box {
+            background: var(--bg-950);
+            border: 1px solid var(--border-700);
+            border-radius: 12px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+
+        .modal-actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-badge">⚡</div>
-        <div class="brand-title">RéflexeSport</div>
-      </div>
-      <div class="top-actions">
-        <button id="openPodiumBtn" class="podium-btn">🏆 Podium <span id="podiumCount">0</span></button>
-        <button id="soundBtn" class="icon-btn" aria-label="Son">🔊</button>
-      </div>
-    </header>
+    <div class="app-shell">
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-logo" aria-hidden="true">⚡</div>
+                <div class="brand-title">RéflexeSport</div>
+            </div>
 
-    <section class="controls">
-      <div class="modes-grid">
-        <button class="mode-pill active" data-mode="reaction">⚡ Réaction</button>
-        <button class="mode-pill" data-mode="stroop">🎨 Stroop</button>
-        <button class="mode-pill" data-mode="periph">👁️ Périphérie</button>
-      </div>
+            <div class="header-actions">
+                <button type="button" class="btn-podium-trigger" onclick="openPodiumModal()">
+                    <span>🏆 Podium</span>
+                    <span id="totalRecordsBadge" class="podium-count-badge mono">0</span>
+                </button>
+                <button type="button" class="btn-sound" onclick="toggleSound()" aria-label="Son">
+                    <span id="soundIcon">🔊</span>
+                </button>
+            </div>
+        </header>
 
-      <div class="row-2">
-        <div class="seg-group" id="levelGroup">
-          <button class="seg-btn active" data-level="debutant">Débutant</button>
-          <button class="seg-btn" data-level="athlete">Athlète</button>
-          <button class="seg-btn" data-level="pro">Pro</button>
-        </div>
-        <div class="seg-group" id="scopeGroup">
-          <button class="seg-btn active" data-scope="5">5 essais</button>
-          <button class="seg-btn" data-scope="10">10 essais</button>
-          <button class="seg-btn" data-scope="15s">15 s</button>
-        </div>
-      </div>
-    </section>
+        <section class="modes-grid">
+            <button type="button" id="mode-card-reaction" class="mode-card active" onclick="selectMode('reaction')">
+                <span class="mode-num mono">01</span>
+                <span class="mode-card-title">Réaction</span>
+            </button>
+            <button type="button" id="mode-card-stroop" class="mode-card" onclick="selectMode('stroop')">
+                <span class="mode-num mono">02</span>
+                <span class="mode-card-title">Stroop</span>
+            </button>
+            <button type="button" id="mode-card-peripheral" class="mode-card" onclick="selectMode('peripheral')">
+                <span class="mode-num mono">03</span>
+                <span class="mode-card-title">Périphérique</span>
+            </button>
+        </section>
 
-    <section class="stats-strip">
-      <div class="stat-box"><div class="stat-val" id="statAvg">—</div><div class="stat-lbl">Moy. ms</div></div>
-      <div class="stat-box"><div class="stat-val" id="statBest">—</div><div class="stat-lbl">Meilleur</div></div>
-      <div class="stat-box"><div class="stat-val" id="statAcc">100%</div><div class="stat-lbl">Précision</div></div>
-      <div class="stat-box"><div class="stat-val" id="statProg">0/5</div><div class="stat-lbl">Progrès</div></div>
-    </section>
+        <section class="config-panel">
+            <div class="config-row">
+                <div class="pill-group">
+                    <button type="button" id="diff-debutant" class="pill-btn" onclick="setDifficulty('debutant')">Débutant</button>
+                    <button type="button" id="diff-athlete" class="pill-btn active-emerald" onclick="setDifficulty('athlete')">Athlète</button>
+                    <button type="button" id="diff-pro" class="pill-btn" onclick="setDifficulty('pro')">Pro</button>
+                </div>
+                <div class="pill-group" style="flex:0.85;">
+                    <button type="button" id="fmt-targets" class="pill-btn active-cyan" onclick="setSessionFormat('targets')">Cibles</button>
+                    <button type="button" id="fmt-duration" class="pill-btn" onclick="setSessionFormat('duration')">Durée</button>
+                </div>
+                <select id="sessionAmountSelect" class="select-field mono" onchange="setSessionAmount(this.value)" aria-label="Valeur"></select>
+            </div>
 
-    <main class="arena" id="arena"></main>
+            <div id="stroopSubControl" class="config-row hidden">
+                <div class="pill-group">
+                    <button type="button" id="stroop-sub-color" class="pill-btn active-cyan" onclick="setStroopSubMode('color')">Couleur d'encre</button>
+                    <button type="button" id="stroop-sub-arrow" class="pill-btn" onclick="setStroopSubMode('arrow')">Flèches inversées</button>
+                </div>
+            </div>
+        </section>
 
-    <button class="cta-btn" id="mainActionBtn">Démarrer la session</button>
-  </div>
+        <section class="kpi-strip">
+            <div class="kpi-mini">
+                <div class="kpi-mini-lbl">Moyen</div>
+                <div id="kpiAvgMs" class="kpi-mini-val mono" style="color: var(--cyan-400);">-- ms</div>
+            </div>
+            <div class="kpi-mini">
+                <div class="kpi-mini-lbl">Meilleur</div>
+                <div id="kpiBestMs" class="kpi-mini-val mono" style="color: var(--emerald-400);">-- ms</div>
+            </div>
+            <div class="kpi-mini">
+                <div class="kpi-mini-lbl">Précision</div>
+                <div id="kpiAccuracy" class="kpi-mini-val mono" style="color: var(--volt-400);">-- %</div>
+            </div>
+            <div class="kpi-mini">
+                <div class="kpi-mini-lbl" id="kpiProgLabel">Cibles</div>
+                <div id="kpiProgressVal" class="kpi-mini-val mono" style="color: var(--amber-300);">0/15</div>
+            </div>
+        </section>
 
-  <div class="modal-backdrop" id="podiumModal" role="dialog" aria-modal="true">
-    <div class="modal">
-      <div class="modal-head">
-        <div class="modal-title">🏆 Podium Top 3</div>
-        <button class="close-btn" id="closePodiumBtn" aria-label="Fermer">✕</button>
-      </div>
+        <section class="arena-wrapper">
+            <div class="arena-topbar">
+                <div class="arena-status-pill">
+                    <span id="arenaStatusDot" class="status-dot"></span>
+                    <span id="arenaStatusText">Prêt</span>
+                </div>
+                <span id="arenaHintText" style="color: var(--text-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Appuyez sur Démarrer</span>
+            </div>
 
-      <div class="modes-grid" id="podiumModeTabs">
-        <button class="mode-pill active" data-pmode="reaction">⚡ Réaction</button>
-        <button class="mode-pill" data-pmode="stroop">🎨 Stroop</button>
-        <button class="mode-pill" data-pmode="periph">👁️ Périphérie</button>
-      </div>
+            <div id="arenaStage" class="arena-stage" onpointerdown="handleStagePointer(event)"></div>
 
-      <div class="seg-group" id="podiumLevelTabs">
-        <button class="seg-btn active" data-plevel="debutant">Débutant</button>
-        <button class="seg-btn" data-plevel="athlete">Athlète</button>
-        <button class="seg-btn" data-plevel="pro">Pro</button>
-      </div>
+            <div id="stroopControlsBar" class="stroop-controls-bar hidden"></div>
+        </section>
 
-      <div class="record-banner" id="recordBanner">
-        <div style="font-weight: 800; color: #fde68a; font-size: 13px;" id="recordBannerText">🎉 Nouveau record ! Nom de l'athlète :</div>
-        <div class="record-input-row">
-          <input type="text" id="newRecordName" class="name-input" maxlength="20" placeholder="Prénom ou surnom..." autocomplete="off" />
-          <button class="cta-btn" id="saveRecordNameBtn" style="width: auto; height: 42px; padding: 0 15px; font-size: 14px;">Valider</button>
-        </div>
-      </div>
-
-      <div class="podium-list" id="podiumList"></div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 11px; color: var(--muted);">Sauvegarde locale iPhone</span>
-        <button class="small-btn danger" id="resetCategoryBtn">Réinitialiser ce podium</button>
-      </div>
+        <button type="button" id="startStopBtn" class="btn-start" onclick="toggleSession()">
+            <span id="startStopText">▶ Démarrer la session</span>
+        </button>
     </div>
-  </div>
 
-  <script>
-    (() => {
-      const STORAGE_KEY = 'reflexe_sport_iphone_podium_v1';
-      const LEVELS = {
-        debutant: { minDelay: 950, maxDelay: 2100, grid: 3, targets: 2 },
-        athlete:  { minDelay: 650, maxDelay: 1650, grid: 4, targets: 3 },
-        pro:      { minDelay: 420, maxDelay: 1200, grid: 5, targets: 4 }
-      };
-      const STROOP_COLORS = [
-        { key: 'rouge', label: 'ROUGE', hex: '#f43f5e' },
-        { key: 'bleu',  label: 'BLEU',  hex: '#38bdf8' },
-        { key: 'vert',  label: 'VERT',  hex: '#a3e635' },
-        { key: 'jaune', label: 'JAUNE', hex: '#fbbf24' }
-      ];
+    <div id="podiumModalBackdrop" class="modal-backdrop hidden" onclick="handlePodiumBackdropClick(event)">
+        <div class="modal-window" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">🏆 Podium Top 3</h2>
+                    <p class="modal-subtitle">3 meilleures performances enregistrées par mode & niveau</p>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closePodiumModal()">✕</button>
+            </div>
 
-      const state = {
-        mode: 'reaction',
-        level: 'debutant',
-        scope: '5',
-        soundOn: true,
-        running: false,
-        sessionTimes: [],
-        errors: 0,
-        targetCount: 5,
-        endTime: 0,
-        sessionTimer: null,
-        waitTimer: null,
-        stimulusStart: 0,
-        phase: 'idle',
-        stroopExpected: null,
-        periphSet: new Set(),
-        periphFound: new Set(),
-        podiumMode: 'reaction',
-        podiumLevel: 'debutant',
-        pendingEntryId: null,
-        podiumData: loadPodium()
-      };
+            <div id="newRecordBanner" class="new-record-banner hidden">
+                <div class="new-record-title">🎉 Nouveau Record Podium !</div>
+                <p id="newRecordSummary" class="new-record-desc"></p>
+                <form class="record-form-row" onsubmit="submitNewPodiumRecord(event)">
+                    <input type="text" id="newRecordPlayerInput" class="text-input" maxlength="20" required placeholder="Nom de l'athlète..." />
+                    <button type="submit" class="btn-gold">Valider</button>
+                </form>
+            </div>
 
-      let audioCtx = null;
-      function ensureAudio() {
-        if (!state.soundOn) return null;
-        const Ctx = window.AudioContext || window.webkitAudioContext;
-        if (!Ctx) return null;
-        if (!audioCtx) audioCtx = new Ctx();
-        if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-        return audioCtx;
-      }
+            <div class="podium-selectors">
+                <div class="podium-tabs-row">
+                    <button type="button" id="pod-mode-reaction" class="pill-btn active-emerald" onclick="switchPodiumMode('reaction')">01. Réaction</button>
+                    <button type="button" id="pod-mode-stroop" class="pill-btn" onclick="switchPodiumMode('stroop')">02. Stroop</button>
+                    <button type="button" id="pod-mode-peripheral" class="pill-btn" onclick="switchPodiumMode('peripheral')">03. Périphérie</button>
+                </div>
+                <div class="podium-tabs-row">
+                    <button type="button" id="pod-diff-debutant" class="pill-btn" onclick="switchPodiumDiff('debutant')">Débutant</button>
+                    <button type="button" id="pod-diff-athlete" class="pill-btn active-cyan" onclick="switchPodiumDiff('athlete')">Athlète</button>
+                    <button type="button" id="pod-diff-pro" class="pill-btn" onclick="switchPodiumDiff('pro')">Pro</button>
+                </div>
+            </div>
 
-      function beep(freq = 660, duration = 0.08, type = 'sine') {
-        const ctx = ensureAudio();
-        if (!ctx) return;
-        try {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, ctx.currentTime);
-          gain.gain.setValueAtTime(0.14, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + duration);
-        } catch (_) {}
-      }
+            <div id="podiumVisualStage" class="podium-stage"></div>
+            <div id="podiumDetailedList" class="podium-list"></div>
 
-      function loadPodium() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-        catch (_) { return {}; }
-      }
+            <div class="podium-footer-bar">
+                <div id="resetPodiumZone">
+                    <button type="button" class="btn-reset-cat" onclick="promptResetPodium()">🗑️ Réinitialiser</button>
+                </div>
+                <button type="button" class="btn-secondary" onclick="closePodiumModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
 
-      function savePodium() {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.podiumData)); } catch (_) {}
-        let total = 0;
-        Object.values(state.podiumData).forEach(arr => { if (Array.isArray(arr)) total += arr.length; });
-        document.getElementById('podiumCount').textContent = total;
-      }
+    <div id="summaryModalBackdrop" class="modal-backdrop hidden" onclick="closeSummaryModal()">
+        <div class="modal-window" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">🏁 Bilan de la session</h2>
+                    <p id="summaryModalSub" class="modal-subtitle"></p>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeSummaryModal()">✕</button>
+            </div>
 
-      function getCatKey(mode = state.mode, level = state.level) { return `${mode}__${level}`; }
-      function getTop3(mode = state.podiumMode, level = state.podiumLevel) {
-        const arr = state.podiumData[getCatKey(mode, level)];
-        return Array.isArray(arr) ? arr : [];
-      }
+            <div id="summaryStatsGrid" class="summary-stats-grid"></div>
+            <p id="summaryRankHint" style="font-size:0.75rem; color:var(--text-400); text-align:center;"></p>
 
-      function flashArena() {
-        const arena = document.getElementById('arena');
-        arena.classList.remove('touch-flash');
-        void arena.offsetWidth;
-        arena.classList.add('touch-flash');
-      }
+            <div class="modal-actions-row">
+                <button type="button" class="btn-podium-trigger" style="height:44px; justify-content:center;" onclick="openPodiumFromSummary()">🏆 Podium</button>
+                <button type="button" class="btn-start" style="height:44px;" onclick="replayFromSummary()">↻ Rejouer</button>
+            </div>
+        </div>
+    </div>
 
-      function updateLiveStats() {
-        const times = state.sessionTimes;
-        document.getElementById('statAvg').textContent = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : '—';
-        document.getElementById('statBest').textContent = times.length ? `${Math.min(...times)}ms` : '—';
-        const totalActions = times.length + state.errors;
-        document.getElementById('statAcc').textContent = totalActions > 0 ? `${Math.round((times.length / totalActions) * 100)}%` : '100%';
-        if (state.scope === '15s') {
-          const rem = state.running ? Math.max(0, Math.ceil((state.endTime - performance.now()) / 1000)) : 15;
-          document.getElementById('statProg').textContent = `${rem}s`;
-        } else {
-          document.getElementById('statProg').textContent = `${Math.min(times.length, Number(state.scope))}/${state.scope}`;
+    <script>
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function ensureAudio() {
+            if (!soundEnabled) return null;
+            if (!audioCtx) {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (Ctx) audioCtx = new Ctx();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
+            }
+            return audioCtx;
         }
-      }
 
-      function renderIdleArena() {
-        const lvl = LEVELS[state.level];
-        const desc = {
-          reaction: `Touchez dès que l'écran devient VERT. Tout contact pendant le ROUGE compte comme faux départ.`,
-          stroop: `Touchez en bas la couleur d'ENCRE du mot affiché (et non le sens du texte).`,
-          periph: `Fixez le centre (+) puis touchez les ${lvl.targets} cibles allumées sur la grille ${lvl.grid}×${lvl.grid}.`
-        }[state.mode];
-        document.getElementById('arena').innerHTML = `
-          <div class="reaction-pad" style="cursor: default;">
-            <div class="reaction-big">Prêt ?</div>
-            <div class="reaction-sub">${desc}</div>
-          </div>
-        `;
-      }
-
-      function stopTimers() {
-        clearTimeout(state.waitTimer);
-        clearInterval(state.sessionTimer);
-      }
-
-      function shouldFinish() {
-        if (!state.running) return true;
-        if (state.scope === '15s') return performance.now() >= state.endTime;
-        return state.sessionTimes.length >= state.targetCount;
-      }
-
-      function setActionButton(isRunning) {
-        const btn = document.getElementById('mainActionBtn');
-        if (isRunning) {
-          btn.textContent = '■ Arrêter la session';
-          btn.classList.add('stop');
-        } else {
-          btn.textContent = 'Démarrer la session';
-          btn.classList.remove('stop');
+        function playTone({ freq = 660, endFreq = null, duration = 0.08, type = 'sine', gain = 0.12 }) {
+            const ctx = ensureAudio();
+            if (!ctx) return;
+            try {
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const g = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, now);
+                if (endFreq !== null) osc.frequency.exponentialRampToValueAtTime(Math.max(40, endFreq), now + duration);
+                g.gain.setValueAtTime(0.0001, now);
+                g.gain.linearRampToValueAtTime(gain, now + 0.01);
+                g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+                osc.connect(g);
+                g.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + duration + 0.02);
+            } catch (e) {}
         }
-      }
 
-      function startSession() {
-        ensureAudio();
-        stopTimers();
-        state.running = true;
-        state.sessionTimes = [];
-        state.errors = 0;
-        state.pendingEntryId = null;
-        setActionButton(true);
-        updateLiveStats();
+        const SFX = {
+            start: () => {
+                playTone({ freq: 523.25, duration: 0.07, type: 'triangle', gain: 0.1 });
+                setTimeout(() => playTone({ freq: 783.99, duration: 0.1, type: 'triangle', gain: 0.11 }), 85);
+            },
+            stimulus: () => playTone({ freq: 880, endFreq: 1060, duration: 0.075, type: 'triangle', gain: 0.12 }),
+            hit: () => playTone({ freq: 640, endFreq: 960, duration: 0.065, type: 'sine', gain: 0.11 }),
+            error: () => playTone({ freq: 210, endFreq: 130, duration: 0.19, type: 'sawtooth', gain: 0.12 }),
+            fanfare: () => {
+                playTone({ freq: 523.25, duration: 0.09, type: 'triangle', gain: 0.12 });
+                setTimeout(() => playTone({ freq: 659.25, duration: 0.09, type: 'triangle', gain: 0.12 }), 95);
+                setTimeout(() => playTone({ freq: 783.99, duration: 0.11, type: 'triangle', gain: 0.12 }), 190);
+                setTimeout(() => playTone({ freq: 1046.5, duration: 0.24, type: 'triangle', gain: 0.15 }), 295);
+            }
+        };
 
-        if (state.scope === '15s') {
-          state.endTime = performance.now() + 15000;
-          state.sessionTimer = setInterval(() => {
-            updateLiveStats();
-            if (performance.now() >= state.endTime) finishSession(true);
-          }, 120);
-        } else {
-          state.targetCount = Number(state.scope);
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) { ensureAudio(); SFX.hit(); }
+            document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
         }
-        nextRound();
-      }
 
-      function nextRound() {
-        if (shouldFinish()) { finishSession(true); return; }
-        updateLiveStats();
-        if (state.mode === 'reaction') runReactionRound();
-        else if (state.mode === 'stroop') runStroopRound();
-        else runPeriphRound();
-      }
+        const MODE_LABELS = {
+            reaction: 'Vitesse de Réaction',
+            stroop: 'Stroop & Décision Cognitive',
+            peripheral: 'Vision Périphérique'
+        };
 
-      function runReactionRound() {
-        state.phase = 'wait';
-        const lvl = LEVELS[state.level];
-        document.getElementById('arena').innerHTML = `
-          <div class="reaction-pad wait" id="reactPad">
-            <div class="reaction-big" style="color: #fda4af;">ATTENDEZ...</div>
-            <div class="reaction-sub">Ne touchez pas avant le signal VERT</div>
-          </div>
-        `;
-        const pad = document.getElementById('reactPad');
-        pad.addEventListener('pointerdown', (e) => {
-          e.preventDefault();
-          ensureAudio();
-          flashArena();
-          if (!state.running) return;
-          if (state.phase === 'wait') {
-            clearTimeout(state.waitTimer);
-            state.errors += 1;
-            beep(210, 0.14, 'sawtooth');
-            pad.className = 'reaction-pad';
-            pad.innerHTML = `<div class="reaction-big" style="color: var(--warn);">FAUX DÉPART !</div><div class="reaction-sub">Signal suivant...</div>`;
-            updateLiveStats();
-            state.waitTimer = setTimeout(nextRound, 680);
-          } else if (state.phase === 'go') {
-            const rt = Math.max(80, Math.round(performance.now() - state.stimulusStart));
-            state.sessionTimes.push(rt);
-            beep(880, 0.07, 'sine');
-            state.phase = 'idle';
-            updateLiveStats();
-            if (shouldFinish()) { finishSession(true); return; }
-            pad.className = 'reaction-pad';
-            pad.innerHTML = `<div class="reaction-big" style="color: var(--accent-2);">${rt} ms</div><div class="reaction-sub">Prochain signal...</div>`;
-            state.waitTimer = setTimeout(nextRound, 480);
-          }
-        }, { passive: false });
+        const DIFF_CONFIG = {
+            debutant: { label: 'Débutant', minWait: 1100, maxWait: 2300, reactionTimeout: 2500, stroopTimeout: 2800, invertArrowProb: 0.25, periphGrid: 3, periphSpawnMs: 1300, periphLifeMs: 2150, periphMulti: 1 },
+            athlete:  { label: 'Athlète',  minWait: 700,  maxWait: 1800, reactionTimeout: 1850, stroopTimeout: 2100, invertArrowProb: 0.45, periphGrid: 4, periphSpawnMs: 950,  periphLifeMs: 1600, periphMulti: 2 },
+            pro:      { label: 'Pro',      minWait: 450,  maxWait: 1300, reactionTimeout: 1350, stroopTimeout: 1550, invertArrowProb: 0.65, periphGrid: 5, periphSpawnMs: 680,  periphLifeMs: 1150, periphMulti: 3 }
+        };
 
-        const delay = lvl.minDelay + Math.random() * (lvl.maxDelay - lvl.minDelay);
-        state.waitTimer = setTimeout(() => {
-          if (!state.running || shouldFinish()) return;
-          state.phase = 'go';
-          state.stimulusStart = performance.now();
-          beep(740, 0.06, 'triangle');
-          pad.className = 'reaction-pad go';
-          pad.innerHTML = `<div class="reaction-big" style="color: #ecfccb;">TOUCHEZ !</div><div class="reaction-sub">Réaction immédiate</div>`;
-        }, delay);
-      }
+        const STROOP_COLORS = [
+            { id: 'red', label: 'ROUGE', btnLabel: 'Rouge', hex: '#ef4444' },
+            { id: 'blue', label: 'BLEU', btnLabel: 'Bleu', hex: '#3b82f6' },
+            { id: 'green', label: 'VERT', btnLabel: 'Vert', hex: '#22c55e' },
+            { id: 'yellow', label: 'JAUNE', btnLabel: 'Jaune', hex: '#eab308' }
+        ];
 
-      function runStroopRound() {
-        state.phase = 'stroop';
-        const wordObj = STROOP_COLORS[Math.floor(Math.random() * STROOP_COLORS.length)];
-        let inkObj = STROOP_COLORS[Math.floor(Math.random() * STROOP_COLORS.length)];
-        if (state.level !== 'debutant' && inkObj.key === wordObj.key) {
-          inkObj = STROOP_COLORS[(STROOP_COLORS.indexOf(inkObj) + 1) % STROOP_COLORS.length];
+        const STROOP_ARROWS = [
+            { id: 'left', label: 'Gauche', symbol: '←' },
+            { id: 'up', label: 'Haut', symbol: '↑' },
+            { id: 'down', label: 'Bas', symbol: '↓' },
+            { id: 'right', label: 'Droite', symbol: '→' }
+        ];
+
+        const state = {
+            mode: 'reaction',
+            difficulty: 'athlete',
+            sessionFormat: 'targets',
+            sessionAmount: 15,
+            stroopSubMode: 'color',
+            isRunning: false,
+            phase: 'idle',
+            completedHits: 0,
+            elapsedSeconds: 0,
+            sessionStartedAt: 0,
+            stimulusShownAt: 0,
+            expectedAnswerId: null,
+            reactionTimes: [],
+            bestMs: null,
+            totalAttempts: 0,
+            validHits: 0,
+            errorCount: 0,
+            score: 0,
+            waitTimer: null,
+            stimTimer: null,
+            feedbackTimer: null,
+            durationTimer: null,
+            periphInterval: null,
+            periphTargets: new Map(),
+            periphSeq: 0
+        };
+
+        const LS_PODIUM_KEY = 'reflexesport_podium_top3_v1';
+        const LS_LAST_PLAYER_KEY = 'reflexesport_last_athlete_v1';
+
+        function createEmptyPodiumStore() {
+            return {
+                reaction: { debutant: [], athlete: [], pro: [] },
+                stroop: { debutant: [], athlete: [], pro: [] },
+                peripheral: { debutant: [], athlete: [], pro: [] }
+            };
         }
-        state.stroopExpected = inkObj.key;
-        const arena = document.getElementById('arena');
-        arena.innerHTML = `
-          <div class="stroop-top">
-            <div class="stroop-rule">COULEUR DE L'ENCRE</div>
-            <div class="stroop-word" style="color: ${inkObj.hex};">${wordObj.label}</div>
-          </div>
-          <div class="thumb-choices">
-            ${STROOP_COLORS.map(c => `
-              <button class="thumb-btn" data-color="${c.key}">
-                <span style="width:13px;height:13px;border-radius:50%;background:${c.hex};display:inline-block;"></span>
-                ${c.label}
-              </button>
-            `).join('')}
-          </div>
-        `;
-        state.stimulusStart = performance.now();
-        arena.querySelectorAll('.thumb-btn').forEach(btn => {
-          btn.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            ensureAudio();
-            flashArena();
-            if (!state.running || state.phase !== 'stroop') return;
-            if (btn.dataset.color === state.stroopExpected) {
-              state.sessionTimes.push(Math.max(120, Math.round(performance.now() - state.stimulusStart)));
-              beep(820, 0.06, 'sine');
-              state.phase = 'idle';
-              nextRound();
+
+        let podiumStore = loadPodiumStore();
+        let lastAthleteName = localStorage.getItem(LS_LAST_PLAYER_KEY) || '';
+
+        function loadPodiumStore() {
+            const base = createEmptyPodiumStore();
+            try {
+                const raw = localStorage.getItem(LS_PODIUM_KEY);
+                if (!raw) return base;
+                const parsed = JSON.parse(raw);
+                ['reaction', 'stroop', 'peripheral'].forEach(m => {
+                    if (parsed[m]) {
+                        ['debutant', 'athlete', 'pro'].forEach(d => {
+                            if (Array.isArray(parsed[m][d])) base[m][d] = parsed[m][d];
+                        });
+                    }
+                });
+            } catch (e) {}
+            return base;
+        }
+
+        function savePodiumStore() {
+            try { localStorage.setItem(LS_PODIUM_KEY, JSON.stringify(podiumStore)); } catch (e) {}
+            updateTotalRecordsBadge();
+        }
+
+        function updateTotalRecordsBadge() {
+            let count = 0;
+            ['reaction', 'stroop', 'peripheral'].forEach(m => {
+                ['debutant', 'athlete', 'pro'].forEach(d => { count += (podiumStore[m][d] || []).length; });
+            });
+            document.getElementById('totalRecordsBadge').textContent = String(count);
+        }
+
+        function sortTop3(entries) {
+            return [...entries].sort((a, b) => {
+                if (a.avgMs !== b.avgMs) return a.avgMs - b.avgMs;
+                if (b.score !== a.score) return b.score - a.score;
+                return b.accuracy - a.accuracy;
+            });
+        }
+
+        function qualifiesForTop3(mode, diff, candidate) {
+            if (!candidate || !candidate.avgMs || candidate.avgMs <= 0 || candidate.validHits <= 0) return false;
+            const list = sortTop3(podiumStore[mode][diff] || []);
+            if (list.length < 3) return true;
+            const third = list[2];
+            if (candidate.avgMs !== third.avgMs) return candidate.avgMs < third.avgMs;
+            if (candidate.score !== third.score) return candidate.score > third.score;
+            return candidate.accuracy > third.accuracy;
+        }
+
+        function selectMode(mode) {
+            if (state.isRunning) stopSession(false);
+            state.mode = mode;
+            ['reaction', 'stroop', 'peripheral'].forEach(m => {
+                document.getElementById(`mode-card-${m}`).className = m === mode ? 'mode-card active' : 'mode-card';
+            });
+            document.getElementById('stroopSubControl').classList.toggle('hidden', mode !== 'stroop');
+            renderIdleArena();
+            renderStroopControlsBar();
+        }
+
+        function setDifficulty(diff) {
+            if (state.isRunning) stopSession(false);
+            state.difficulty = diff;
+            ['debutant', 'athlete', 'pro'].forEach(d => {
+                document.getElementById(`diff-${d}`).className = d === diff ? 'pill-btn active-emerald' : 'pill-btn';
+            });
+            renderIdleArena();
+        }
+
+        function setSessionFormat(fmt) {
+            if (state.isRunning) stopSession(false);
+            state.sessionFormat = fmt;
+            document.getElementById('fmt-targets').className = fmt === 'targets' ? 'pill-btn active-cyan' : 'pill-btn';
+            document.getElementById('fmt-duration').className = fmt === 'duration' ? 'pill-btn active-cyan' : 'pill-btn';
+            populateAmountSelect();
+            updateLiveDashboard();
+        }
+
+        function populateAmountSelect() {
+            const sel = document.getElementById('sessionAmountSelect');
+            if (state.sessionFormat === 'targets') {
+                const opts = [10, 15, 20];
+                if (!opts.includes(state.sessionAmount)) state.sessionAmount = 15;
+                sel.innerHTML = opts.map(n => `<option value="${n}" ${n === state.sessionAmount ? 'selected' : ''}>${n}</option>`).join('');
             } else {
-              state.errors += 1;
-              beep(220, 0.12, 'sawtooth');
-              btn.style.borderColor = 'var(--danger)';
-              updateLiveStats();
+                const opts = [30, 60];
+                if (!opts.includes(state.sessionAmount)) state.sessionAmount = 30;
+                sel.innerHTML = opts.map(s => `<option value="${s}" ${s === state.sessionAmount ? 'selected' : ''}>${s}s</option>`).join('');
             }
-          }, { passive: false });
-        });
-      }
+        }
 
-      function runPeriphRound() {
-        state.phase = 'periph';
-        const lvl = LEVELS[state.level];
-        const size = lvl.grid;
-        const total = size * size;
-        const centerIdx = size % 2 === 1 ? Math.floor(total / 2) : -1;
-        const candidates = [];
-        for (let i = 0; i < total; i++) if (i !== centerIdx) candidates.push(i);
-        candidates.sort(() => Math.random() - 0.5);
-        state.periphSet = new Set(candidates.slice(0, lvl.targets));
-        state.periphFound = new Set();
+        function setSessionAmount(val) {
+            if (state.isRunning) stopSession(false);
+            state.sessionAmount = Number(val);
+            updateLiveDashboard();
+        }
 
-        const arena = document.getElementById('arena');
-        arena.innerHTML = `
-          <div class="periph-header">
-            <span>Fixez le centre <strong>+</strong></span>
-            <span id="periphCounter">0 / ${lvl.targets}</span>
-          </div>
-          <div class="periph-wrap">
-            <div class="periph-grid" style="grid-template-columns: repeat(${size}, 1fr);">
-              ${Array.from({ length: total }, (_, idx) => {
-                if (idx === centerIdx) return `<div class="periph-cell center-fix">+</div>`;
-                const isTarget = state.periphSet.has(idx);
-                return `<button class="periph-cell ${isTarget ? 'target' : ''}" data-idx="${idx}">${isTarget ? '●' : ''}</button>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-        state.stimulusStart = performance.now();
-        arena.querySelectorAll('.periph-cell[data-idx]').forEach(cell => {
-          cell.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
+        function setStroopSubMode(sub) {
+            if (state.isRunning) stopSession(false);
+            state.stroopSubMode = sub;
+            document.getElementById('stroop-sub-color').className = sub === 'color' ? 'pill-btn active-cyan' : 'pill-btn';
+            document.getElementById('stroop-sub-arrow').className = sub === 'arrow' ? 'pill-btn active-cyan' : 'pill-btn';
+            renderIdleArena();
+            renderStroopControlsBar();
+        }
+
+        function clearAllTimers() {
+            if (state.waitTimer) { clearTimeout(state.waitTimer); state.waitTimer = null; }
+            if (state.stimTimer) { clearTimeout(state.stimTimer); state.stimTimer = null; }
+            if (state.feedbackTimer) { clearTimeout(state.feedbackTimer); state.feedbackTimer = null; }
+            if (state.durationTimer) { clearInterval(state.durationTimer); state.durationTimer = null; }
+            if (state.periphInterval) { clearInterval(state.periphInterval); state.periphInterval = null; }
+            state.periphTargets.forEach(t => clearTimeout(t.timer));
+            state.periphTargets.clear();
+        }
+
+        function toggleSession() {
+            if (state.isRunning) stopSession(false);
+            else startSession();
+        }
+
+        function startSession() {
+            clearAllTimers();
             ensureAudio();
-            flashArena();
-            if (!state.running || state.phase !== 'periph') return;
-            const idx = Number(cell.dataset.idx);
-            if (state.periphSet.has(idx) && !state.periphFound.has(idx)) {
-              state.periphFound.add(idx);
-              cell.classList.remove('target');
-              cell.classList.add('hit');
-              cell.textContent = '✓';
-              beep(760, 0.05, 'sine');
-              document.getElementById('periphCounter').textContent = `${state.periphFound.size} / ${state.periphSet.size}`;
-              if (state.periphFound.size === state.periphSet.size) {
-                state.sessionTimes.push(Math.max(150, Math.round(performance.now() - state.stimulusStart)));
-                state.phase = 'idle';
-                nextRound();
-              }
-            } else if (!state.periphSet.has(idx)) {
-              state.errors += 1;
-              cell.classList.add('miss');
-              beep(240, 0.1, 'sawtooth');
-              updateLiveStats();
+            SFX.start();
+
+            state.isRunning = true;
+            state.phase = 'waiting';
+            state.completedHits = 0;
+            state.elapsedSeconds = 0;
+            state.sessionStartedAt = performance.now();
+            state.reactionTimes = [];
+            state.bestMs = null;
+            state.totalAttempts = 0;
+            state.validHits = 0;
+            state.errorCount = 0;
+            state.score = 0;
+
+            updateLiveDashboard();
+            updateSessionControlsUI();
+            renderStroopControlsBar();
+
+            if (state.sessionFormat === 'duration') {
+                state.durationTimer = setInterval(() => {
+                    if (!state.isRunning) return;
+                    state.elapsedSeconds = Math.floor((performance.now() - state.sessionStartedAt) / 1000);
+                    updateLiveDashboard();
+                    if (state.elapsedSeconds >= state.sessionAmount) stopSession(true);
+                }, 200);
             }
-          }, { passive: false });
-        });
-      }
 
-      function finishSession(completed = true) {
-        stopTimers();
-        state.running = false;
-        state.phase = 'idle';
-        setActionButton(false);
-        updateLiveStats();
-
-        const times = state.sessionTimes;
-        const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : 0;
-        const best = times.length ? Math.min(...times) : 0;
-        const totalAct = times.length + state.errors;
-        const acc = totalAct > 0 ? Math.round((times.length / totalAct) * 100) : 100;
-        const score = avg ? Math.round(Math.max(100, 120000 / Math.max(140, avg)) * (0.5 + (acc / 100) * 0.5)) : 0;
-
-        document.getElementById('arena').innerHTML = `
-          <div class="reaction-pad" style="cursor: default;">
-            <div class="reaction-big" style="color: var(--accent);">${completed && score ? `${score} pts` : 'Session terminée'}</div>
-            <div class="reaction-sub">
-              Moyenne : <strong>${avg ? avg + ' ms' : '—'}</strong> • Meilleur : <strong>${best ? best + ' ms' : '—'}</strong><br/>
-              Précision : <strong>${acc}%</strong> (${times.length} réussites)
-            </div>
-          </div>
-        `;
-
-        if (completed && score > 0 && times.length > 0) {
-          const entry = {
-            id: String(Date.now()) + '_' + Math.random().toString(36).slice(2, 6),
-            name: 'Athlète',
-            score,
-            avgMs: avg,
-            date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })
-          };
-          const key = getCatKey(state.mode, state.level);
-          const current = getTop3(state.mode, state.level).slice();
-          current.push(entry);
-          current.sort((a, b) => b.score - a.score || a.avgMs - b.avgMs);
-          const top3 = current.slice(0, 3);
-          const idx = top3.findIndex(item => item.id === entry.id);
-          if (idx !== -1) {
-            state.podiumData[key] = top3;
-            savePodium();
-            state.pendingEntryId = entry.id;
-            openPodiumModal(state.mode, state.level, true, idx + 1);
-          }
+            if (state.mode === 'reaction') scheduleReactionRound();
+            else if (state.mode === 'stroop') scheduleStroopRound();
+            else startPeripheralSession();
         }
-      }
 
-      function openPodiumModal(mode = state.mode, level = state.level, isNewRecord = false, pos = 1) {
-        state.podiumMode = mode;
-        state.podiumLevel = level;
-        document.querySelectorAll('#podiumModeTabs .mode-pill').forEach(b => b.classList.toggle('active', b.dataset.pmode === mode));
-        document.querySelectorAll('#podiumLevelTabs .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.plevel === level));
-        const banner = document.getElementById('recordBanner');
-        const input = document.getElementById('newRecordName');
-        if (isNewRecord && state.pendingEntryId) {
-          const medals = { 1: '🥇 1re place', 2: '🥈 2e place', 3: '🥉 3e place' };
-          document.getElementById('recordBannerText').textContent = `🎉 Nouveau record (${medals[pos] || 'Top 3'}) ! Nom de l'athlète :`;
-          banner.classList.add('show');
-          input.value = '';
-          setTimeout(() => input.focus(), 120);
-        } else {
-          banner.classList.remove('show');
+        function stopSession(completedNaturally) {
+            const wasRunning = state.isRunning;
+            clearAllTimers();
+            state.isRunning = false;
+            state.phase = 'idle';
+            updateSessionControlsUI();
+            renderIdleArena();
+            renderStroopControlsBar();
+            if (wasRunning && completedNaturally) finalizeSessionResults();
         }
-        renderPodiumList();
-        document.getElementById('podiumModal').classList.add('open');
-      }
 
-      function renderPodiumList() {
-        const list = document.getElementById('podiumList');
-        const items = getTop3(state.podiumMode, state.podiumLevel);
-        const medals = ['🥇', '🥈', '🥉'];
-        if (!items.length) {
-          list.innerHTML = `<div class="podium-row" style="justify-content: center; color: var(--muted); font-size: 13px;">Aucun score enregistré pour cette catégorie.</div>`;
-          return;
-        }
-        list.innerHTML = items.map((item, idx) => `
-          <div class="podium-row rank-${idx + 1}">
-            <div class="rank-medal">${medals[idx]}</div>
-            <div class="podium-info">
-              <div class="podium-name">${item.name.replace(/[<>&"]/g, '')}</div>
-              <div class="podium-score">${item.score} pts • Moy. ${item.avgMs} ms (${item.date})</div>
-            </div>
-            <button class="small-btn" data-rename-id="${item.id}">✏️ Nom</button>
-          </div>
-        `).join('');
-        list.querySelectorAll('[data-rename-id]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const key = getCatKey(state.podiumMode, state.podiumLevel);
-            const target = (state.podiumData[key] || []).find(x => x.id === btn.dataset.renameId);
-            if (!target) return;
-            const nextName = prompt('Nom de l’athlète sur le podium :', target.name);
-            if (nextName !== null) {
-              target.name = nextName.trim().slice(0, 20) || 'Athlète';
-              savePodium();
-              renderPodiumList();
+        function checkTargetCompletion() {
+            if (!state.isRunning) return false;
+            if (state.sessionFormat === 'targets' && state.completedHits >= state.sessionAmount) {
+                setTimeout(() => stopSession(true), 300);
+                return true;
             }
-          });
-        });
-      }
+            return false;
+        }
 
-      document.querySelectorAll('.mode-pill[data-mode]').forEach(btn => btn.addEventListener('click', () => {
-        if (state.running) return;
-        state.mode = btn.dataset.mode;
-        document.querySelectorAll('.mode-pill[data-mode]').forEach(b => b.classList.toggle('active', b === btn));
-        renderIdleArena();
-      }));
+        function computeHitPoints(ms) {
+            const diffMult = state.difficulty === 'pro' ? 1.5 : state.difficulty === 'athlete' ? 1.2 : 1.0;
+            const speedBonus = Math.max(40, Math.round(650 - ms));
+            return Math.round(speedBonus * diffMult);
+        }
 
-      document.querySelectorAll('#levelGroup .seg-btn').forEach(btn => btn.addEventListener('click', () => {
-        if (state.running) return;
-        state.level = btn.dataset.level;
-        document.querySelectorAll('#levelGroup .seg-btn').forEach(b => b.classList.toggle('active', b === btn));
-        renderIdleArena();
-      }));
+        function recordValidHit(ms) {
+            state.totalAttempts += 1;
+            state.validHits += 1;
+            state.completedHits += 1;
+            state.reactionTimes.push(ms);
+            if (state.bestMs === null || ms < state.bestMs) state.bestMs = ms;
+            state.score += computeHitPoints(ms);
+            updateLiveDashboard();
+        }
 
-      document.querySelectorAll('#scopeGroup .seg-btn').forEach(btn => btn.addEventListener('click', () => {
-        if (state.running) return;
-        state.scope = btn.dataset.scope;
-        document.querySelectorAll('#scopeGroup .seg-btn').forEach(b => b.classList.toggle('active', b === btn));
-        updateLiveStats();
-      }));
+        function recordMistake(penaltyPts = 50) {
+            state.totalAttempts += 1;
+            state.errorCount += 1;
+            state.score = Math.max(0, state.score - penaltyPts);
+            updateLiveDashboard();
+        }
 
-      document.getElementById('soundBtn').addEventListener('click', () => {
-        state.soundOn = !state.soundOn;
-        document.getElementById('soundBtn').textContent = state.soundOn ? '🔊' : '🔇';
-        if (state.soundOn) { ensureAudio(); beep(660, 0.06, 'sine'); }
-      });
+        function updateSessionControlsUI() {
+            const btn = document.getElementById('startStopBtn');
+            const txt = document.getElementById('startStopText');
+            if (state.isRunning) {
+                btn.className = 'btn-stop';
+                txt.textContent = '■ Arrêter';
+            } else {
+                btn.className = 'btn-start';
+                txt.textContent = '▶ Démarrer la session';
+            }
+        }
 
-      document.getElementById('mainActionBtn').addEventListener('click', () => {
-        if (state.running) finishSession(false);
-        else startSession();
-      });
+        function setArenaHeader(status, dotColor, hint, stageExtraClass = '') {
+            document.getElementById('arenaStatusText').textContent = status;
+            document.getElementById('arenaStatusDot').style.background = dotColor;
+            document.getElementById('arenaHintText').textContent = hint;
+            document.getElementById('arenaStage').className = `arena-stage ${stageExtraClass}`.trim();
+        }
 
-      document.getElementById('openPodiumBtn').addEventListener('click', () => openPodiumModal(state.mode, state.level, false));
-      document.getElementById('closePodiumBtn').addEventListener('click', () => document.getElementById('podiumModal').classList.remove('open'));
-      document.getElementById('podiumModal').addEventListener('click', (e) => {
-        if (e.target.id === 'podiumModal') document.getElementById('podiumModal').classList.remove('open');
-      });
+        function renderIdleArena() {
+            const stage = document.getElementById('arenaStage');
+            const diffLabel = DIFF_CONFIG[state.difficulty].label;
+            if (state.mode === 'reaction') {
+                setArenaHeader('Prêt', '#34d399', `Niveau ${diffLabel}`);
+                stage.innerHTML = `
+                    <div style="text-align:center; max-width:300px;">
+                        <div style="font-size:2.1rem; margin-bottom:4px;">⚡</div>
+                        <h3 style="font-size:1.05rem; font-weight:900;">Vitesse de Réaction</h3>
+                        <p style="font-size:0.78rem; color:var(--text-400); margin-top:4px;">Touchez l'écran dès que le cercle passe au <strong style="color:#34d399;">VERT</strong>.</p>
+                    </div>
+                `;
+            } else if (state.mode === 'stroop') {
+                const subDesc = state.stroopSubMode === 'color'
+                    ? 'Touchez la <strong>couleur de l’encre</strong> et ignorez le mot écrit.'
+                    : 'Touchez la direction indiquée ou <strong>inversée</strong>.';
+                setArenaHeader('Prêt', '#22d3ee', `Niveau ${diffLabel}`);
+                stage.innerHTML = `
+                    <div style="text-align:center; max-width:300px;">
+                        <div style="font-size:2.1rem; margin-bottom:4px;">🧠</div>
+                        <h3 style="font-size:1.05rem; font-weight:900;">Stroop & Décision</h3>
+                        <p style="font-size:0.78rem; color:var(--text-400); margin-top:4px;">${subDesc}</p>
+                    </div>
+                `;
+            } else {
+                const gridSize = DIFF_CONFIG[state.difficulty].periphGrid;
+                setArenaHeader('Prêt', '#fbbf24', `Grille ${gridSize}×${gridSize}`);
+                stage.innerHTML = `
+                    <div style="text-align:center; max-width:300px;">
+                        <div style="font-size:2.1rem; margin-bottom:4px;">👁️</div>
+                        <h3 style="font-size:1.05rem; font-weight:900;">Vision Périphérique (${gridSize}×${gridSize})</h3>
+                        <p style="font-size:0.78rem; color:var(--text-400); margin-top:4px;">Fixez le centre bleu et touchez chaque cible lumineuse.</p>
+                    </div>
+                `;
+            }
+        }
 
-      document.querySelectorAll('#podiumModeTabs .mode-pill').forEach(btn => btn.addEventListener('click', () => {
-        state.podiumMode = btn.dataset.pmode;
-        document.querySelectorAll('#podiumModeTabs .mode-pill').forEach(b => b.classList.toggle('active', b === btn));
-        renderPodiumList();
-      }));
+        function scheduleReactionRound() {
+            if (!state.isRunning || state.mode !== 'reaction') return;
+            const cfg = DIFF_CONFIG[state.difficulty];
+            state.phase = 'waiting';
+            setArenaHeader('Attente...', '#ef4444', 'Ne touchez pas le rouge', 'waiting-red');
+            document.getElementById('arenaStage').innerHTML = `
+                <div class="circle-wait">
+                    <span style="font-size:0.88rem;">ATTENDEZ</span>
+                    <span style="font-size:0.68rem; opacity:0.85; margin-top:2px;">Signal vert...</span>
+                </div>
+            `;
 
-      document.querySelectorAll('#podiumLevelTabs .seg-btn').forEach(btn => btn.addEventListener('click', () => {
-        state.podiumLevel = btn.dataset.plevel;
-        document.querySelectorAll('#podiumLevelTabs .seg-btn').forEach(b => b.classList.toggle('active', b === btn));
-        renderPodiumList();
-      }));
+            const delay = cfg.minWait + Math.random() * (cfg.maxWait - cfg.minWait);
+            state.waitTimer = setTimeout(() => {
+                if (!state.isRunning || state.mode !== 'reaction') return;
+                state.phase = 'active';
+                state.stimulusShownAt = performance.now();
+                SFX.stimulus();
+                setArenaHeader('TOUCHEZ !', '#34d399', 'Réaction immédiate', 'go-green');
+                document.getElementById('arenaStage').innerHTML = `
+                    <div class="circle-go">
+                        <span style="font-size:1.35rem;">GO !</span>
+                        <span style="font-size:0.68rem;">TOUCHEZ</span>
+                    </div>
+                `;
 
-      function confirmPendingName() {
-        if (!state.pendingEntryId) return;
-        const clean = document.getElementById('newRecordName').value.trim().slice(0, 20) || 'Athlète';
-        const list = state.podiumData[getCatKey(state.mode, state.level)] || [];
-        const found = list.find(item => item.id === state.pendingEntryId);
-        if (found) { found.name = clean; savePodium(); }
-        state.pendingEntryId = null;
-        document.getElementById('recordBanner').classList.remove('show');
-        renderPodiumList();
-      }
+                state.stimTimer = setTimeout(() => {
+                    if (!state.isRunning || state.phase !== 'active') return;
+                    state.phase = 'feedback';
+                    SFX.error();
+                    recordMistake(40);
+                    setArenaHeader('Trop lent !', '#f59e0b', 'Délai dépassé');
+                    document.getElementById('arenaStage').innerHTML = `<div style="font-size:1.45rem; font-weight:900; color:var(--amber-400);">Trop lent !</div>`;
+                    state.feedbackTimer = setTimeout(scheduleReactionRound, 600);
+                }, cfg.reactionTimeout);
+            }, delay);
+        }
 
-      document.getElementById('saveRecordNameBtn').addEventListener('click', confirmPendingName);
-      document.getElementById('newRecordName').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); confirmPendingName(); }
-      });
+        function handleReactionTrigger() {
+            if (!state.isRunning || state.mode !== 'reaction') return;
+            if (state.phase === 'waiting') {
+                clearTimeout(state.waitTimer);
+                state.phase = 'feedback';
+                SFX.error();
+                recordMistake(60);
+                setArenaHeader('Trop tôt !', '#ef4444', 'Faux départ');
+                document.getElementById('arenaStage').innerHTML = `<div style="font-size:1.5rem; font-weight:900; color:var(--red-400);">Trop tôt !</div>`;
+                state.feedbackTimer = setTimeout(scheduleReactionRound, 720);
+                return;
+            }
+            if (state.phase !== 'active') return;
+            clearTimeout(state.stimTimer);
+            const ms = Math.round(performance.now() - state.stimulusShownAt);
+            if (ms < 85) {
+                state.phase = 'feedback';
+                SFX.error();
+                recordMistake(60);
+                document.getElementById('arenaStage').innerHTML = `<div style="font-size:1.4rem; font-weight:900; color:var(--red-400);">Trop tôt ! (${ms} ms)</div>`;
+                state.feedbackTimer = setTimeout(scheduleReactionRound, 680);
+                return;
+            }
+            state.phase = 'feedback';
+            SFX.hit();
+            recordValidHit(ms);
+            setArenaHeader('Validé', '#34d399', 'Réflexe mesuré');
+            document.getElementById('arenaStage').innerHTML = `<div class="mono" style="font-size:2.4rem; font-weight:900; color:var(--emerald-400);">${ms} ms</div>`;
+            if (!checkTargetCompletion()) {
+                state.feedbackTimer = setTimeout(scheduleReactionRound, 480);
+            }
+        }
 
-      document.getElementById('resetCategoryBtn').addEventListener('click', () => {
-        if (!confirm('Effacer le podium de cette catégorie ?')) return;
-        delete state.podiumData[getCatKey(state.podiumMode, state.podiumLevel)];
-        savePodium();
-        renderPodiumList();
-      });
+        function renderStroopControlsBar() {
+            const bar = document.getElementById('stroopControlsBar');
+            if (state.mode !== 'stroop') {
+                bar.classList.add('hidden');
+                return;
+            }
+            bar.classList.remove('hidden');
 
-      savePodium();
-      updateLiveStats();
-      renderIdleArena();
-    })();
-  </script>
+            if (state.stroopSubMode === 'color') {
+                bar.innerHTML = STROOP_COLORS.map(c => `
+                    <button
+                        type="button"
+                        class="stroop-choice-btn"
+                        ${!state.isRunning ? 'disabled' : ''}
+                        onpointerdown="event.preventDefault(); handleStroopAnswer('${c.id}')"
+                    >
+                        <span style="width:13px; height:13px; border-radius:50%; background:${c.hex};"></span>
+                        <span>${c.btnLabel}</span>
+                    </button>
+                `).join('');
+            } else {
+                bar.innerHTML = STROOP_ARROWS.map(a => `
+                    <button
+                        type="button"
+                        class="stroop-choice-btn"
+                        ${!state.isRunning ? 'disabled' : ''}
+                        onpointerdown="event.preventDefault(); handleStroopAnswer('${a.id}')"
+                    >
+                        <span class="mono" style="font-size:1.15rem; color:var(--cyan-400);">${a.symbol}</span>
+                        <span>${a.label}</span>
+                    </button>
+                `).join('');
+            }
+        }
+
+        function scheduleStroopRound() {
+            if (!state.isRunning || state.mode !== 'stroop') return;
+            const cfg = DIFF_CONFIG[state.difficulty];
+            state.phase = 'waiting';
+            setArenaHeader('Préparation...', '#22d3ee', 'Analyse cognitive');
+            document.getElementById('arenaStage').innerHTML = `<div style="color:var(--cyan-400); font-weight:900; font-size:1.3rem;">•••</div>`;
+
+            state.waitTimer = setTimeout(() => {
+                if (!state.isRunning || state.mode !== 'stroop') return;
+                state.phase = 'active';
+                state.stimulusShownAt = performance.now();
+                SFX.stimulus();
+                const stage = document.getElementById('arenaStage');
+
+                if (state.stroopSubMode === 'color') {
+                    const wordObj = STROOP_COLORS[Math.floor(Math.random() * STROOP_COLORS.length)];
+                    const otherColors = STROOP_COLORS.filter(c => c.id !== wordObj.id);
+                    const inkObj = Math.random() < 0.82 ? otherColors[Math.floor(Math.random() * otherColors.length)] : wordObj;
+                    state.expectedAnswerId = inkObj.id;
+                    setArenaHeader('COULEUR ENCRE', '#34d399', 'Touchez la couleur d’affichage');
+                    stage.innerHTML = `
+                        <div class="stroop-stimulus-box">
+                            <span class="stroop-rule-tag">Couleur de l'encre</span>
+                            <div class="stroop-word-display" style="color:${inkObj.hex};">${wordObj.label}</div>
+                        </div>
+                    `;
+                } else {
+                    const arrowObj = STROOP_ARROWS[Math.floor(Math.random() * STROOP_ARROWS.length)];
+                    const isInverted = Math.random() < cfg.invertArrowProb;
+                    const oppositeMap = { left: 'right', right: 'left', up: 'down', down: 'up' };
+                    state.expectedAnswerId = isInverted ? oppositeMap[arrowObj.id] : arrowObj.id;
+                    setArenaHeader(isInverted ? 'INVERSÉ' : 'DIRECT', isInverted ? '#fbbf24' : '#22d3ee', isInverted ? 'Touchez l’opposé !' : 'Touchez la direction');
+                    stage.innerHTML = `
+                        <div class="stroop-stimulus-box">
+                            <span class="stroop-rule-tag ${isInverted ? 'inverted' : ''}">${isInverted ? '⚠️ Direction Inversée' : 'Direction Directe'}</span>
+                            <div class="stroop-arrow-display" style="color:${isInverted ? 'var(--amber-300)' : 'var(--cyan-400)'};">${arrowObj.symbol}</div>
+                        </div>
+                    `;
+                }
+
+                state.stimTimer = setTimeout(() => {
+                    if (!state.isRunning || state.phase !== 'active') return;
+                    resolveStroopChoice(null, true);
+                }, cfg.stroopTimeout);
+            }, 340 + Math.random() * 400);
+        }
+
+        function handleStroopAnswer(answerId) {
+            if (!state.isRunning || state.mode !== 'stroop' || state.phase !== 'active') return;
+            clearTimeout(state.stimTimer);
+            resolveStroopChoice(answerId, false);
+        }
+
+        function resolveStroopChoice(answerId, timedOut) {
+            state.phase = 'feedback';
+            const ms = Math.round(performance.now() - state.stimulusShownAt);
+            const ok = !timedOut && answerId === state.expectedAnswerId;
+
+            if (ok) {
+                SFX.hit();
+                recordValidHit(ms);
+                setArenaHeader('Validé', '#34d399', 'Bonne réponse');
+                document.getElementById('arenaStage').innerHTML = `<div class="mono" style="font-size:2.2rem; font-weight:900; color:var(--emerald-400);">${ms} ms</div>`;
+            } else {
+                SFX.error();
+                const expectedLabel = state.stroopSubMode === 'color'
+                    ? (STROOP_COLORS.find(c => c.id === state.expectedAnswerId)?.btnLabel || '')
+                    : (STROOP_ARROWS.find(a => a.id === state.expectedAnswerId)?.label || '');
+                recordMistake(50);
+                setArenaHeader('Erreur', '#ef4444', `Attendu : ${expectedLabel}`);
+                document.getElementById('arenaStage').innerHTML = `
+                    <div style="text-align:center;">
+                        <div style="font-size:1.35rem; font-weight:900; color:var(--red-400);">${timedOut ? 'Temps dépassé' : 'Erreur'}</div>
+                        <p style="font-size:0.8rem; color:var(--text-300); margin-top:2px;">Attendu : <strong>${expectedLabel}</strong></p>
+                    </div>
+                `;
+            }
+
+            if (!checkTargetCompletion()) {
+                state.feedbackTimer = setTimeout(scheduleStroopRound, 480);
+            }
+        }
+
+        function startPeripheralSession() {
+            const cfg = DIFF_CONFIG[state.difficulty];
+            const g = cfg.periphGrid;
+            state.phase = 'active';
+            setArenaHeader('Périphérie', '#fbbf24', `Fixez le centre • Grille ${g}×${g}`);
+
+            const stage = document.getElementById('arenaStage');
+            stage.innerHTML = `
+                <div id="periphGridEl" class="periph-grid" style="grid-template-columns: repeat(${g}, minmax(0, 1fr));">
+                    <div class="periph-fixation" aria-hidden="true"></div>
+                </div>
+            `;
+
+            const gridEl = document.getElementById('periphGridEl');
+            for (let i = 0; i < g * g; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'periph-cell';
+                gridEl.appendChild(cell);
+            }
+
+            spawnPeripheralWave(cfg);
+            state.periphInterval = setInterval(() => {
+                if (!state.isRunning || state.mode !== 'peripheral') return;
+                spawnPeripheralWave(cfg);
+            }, cfg.periphSpawnMs);
+        }
+
+        function spawnPeripheralWave(cfg) {
+            const gridEl = document.getElementById('periphGridEl');
+            if (!gridEl) return;
+            const freeCells = Array.from(gridEl.querySelectorAll('.periph-cell')).filter(c => !c.querySelector('.periph-target'));
+            if (freeCells.length === 0) return;
+
+            const spawnCount = Math.min(freeCells.length, cfg.periphMulti > 1 && Math.random() < 0.5 ? 2 : 1);
+            for (let k = 0; k < spawnCount; k++) {
+                const idx = Math.floor(Math.random() * freeCells.length);
+                const cell = freeCells.splice(idx, 1)[0];
+                const targetId = ++state.periphSeq;
+                const spawnedAt = performance.now();
+                SFX.stimulus();
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'periph-target';
+                btn.textContent = '●';
+
+                btn.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const entry = state.periphTargets.get(targetId);
+                    if (!entry || !state.isRunning) return;
+                    clearTimeout(entry.timer);
+                    state.periphTargets.delete(targetId);
+                    btn.remove();
+
+                    const ms = Math.round(performance.now() - spawnedAt);
+                    SFX.hit();
+                    recordValidHit(ms);
+                    checkTargetCompletion();
+                }, { passive: false });
+
+                cell.appendChild(btn);
+
+                const timer = setTimeout(() => {
+                    if (!state.periphTargets.has(targetId)) return;
+                    state.periphTargets.delete(targetId);
+                    btn.remove();
+                    if (state.isRunning) {
+                        SFX.error();
+                        recordMistake(40);
+                    }
+                }, cfg.periphLifeMs);
+
+                state.periphTargets.set(targetId, { timer });
+            }
+        }
+
+        function handleStagePointer(e) {
+            if (!state.isRunning) return;
+            if (state.mode === 'reaction') {
+                e.preventDefault();
+                handleReactionTrigger();
+            } else if (state.mode === 'peripheral' && state.phase === 'active') {
+                if (e.target.closest('.periph-target')) return;
+                SFX.error();
+                recordMistake(30);
+            }
+        }
+
+        function getAverageMs() {
+            if (state.reactionTimes.length === 0) return null;
+            return Math.round(state.reactionTimes.reduce((a, b) => a + b, 0) / state.reactionTimes.length);
+        }
+
+        function getAccuracy() {
+            if (state.totalAttempts === 0) return null;
+            return Math.round((state.validHits / state.totalAttempts) * 100);
+        }
+
+        function updateLiveDashboard() {
+            const avg = getAverageMs();
+            const acc = getAccuracy();
+            document.getElementById('kpiAvgMs').textContent = avg !== null ? `${avg} ms` : '-- ms';
+            document.getElementById('kpiBestMs').textContent = state.bestMs !== null ? `${state.bestMs} ms` : '-- ms';
+            document.getElementById('kpiAccuracy').textContent = acc !== null ? `${acc} %` : '-- %';
+
+            if (state.sessionFormat === 'targets') {
+                document.getElementById('kpiProgLabel').textContent = 'Cibles';
+                document.getElementById('kpiProgressVal').textContent = `${Math.min(state.completedHits, state.sessionAmount)}/${state.sessionAmount}`;
+            } else {
+                document.getElementById('kpiProgLabel').textContent = 'Temps';
+                const rem = state.isRunning ? Math.max(0, state.sessionAmount - state.elapsedSeconds) : state.sessionAmount;
+                document.getElementById('kpiProgressVal').textContent = `${rem}s`;
+            }
+        }
+
+        const podiumModalState = { mode: 'reaction', diff: 'athlete', pendingCandidate: null, editingIndex: null };
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function finalizeSessionResults() {
+            const avgMs = getAverageMs();
+            const accuracy = getAccuracy() ?? 0;
+
+            if (!avgMs || state.validHits === 0) {
+                openSummaryModal({ avgMs: null, bestMs: null, accuracy, score: state.score });
+                return;
+            }
+
+            const candidate = {
+                name: '',
+                avgMs,
+                bestMs: state.bestMs,
+                accuracy,
+                score: state.score,
+                validHits: state.validHits,
+                date: new Date().toLocaleDateString('fr-FR')
+            };
+
+            if (qualifiesForTop3(state.mode, state.difficulty, candidate)) {
+                SFX.fanfare();
+                openPodiumModal({
+                    mode: state.mode,
+                    diff: state.difficulty,
+                    pendingCandidate: candidate,
+                    recordSummary: `${MODE_LABELS[state.mode]} (${DIFF_CONFIG[state.difficulty].label}) : ${avgMs} ms • ${state.score} pts`
+                });
+            } else {
+                openSummaryModal({ avgMs, bestMs: state.bestMs, accuracy, score: state.score });
+            }
+        }
+
+        function openPodiumModal(options = {}) {
+            podiumModalState.editingIndex = null;
+            podiumModalState.mode = options.mode || state.mode;
+            podiumModalState.diff = options.diff || state.difficulty;
+
+            const banner = document.getElementById('newRecordBanner');
+            if (options.pendingCandidate) {
+                podiumModalState.pendingCandidate = options.pendingCandidate;
+                document.getElementById('newRecordSummary').textContent = options.recordSummary || '';
+                const input = document.getElementById('newRecordPlayerInput');
+                input.value = lastAthleteName;
+                banner.classList.remove('hidden');
+                setTimeout(() => input.focus(), 100);
+            } else {
+                podiumModalState.pendingCandidate = null;
+                banner.classList.add('hidden');
+            }
+
+            renderPodiumModal();
+            document.getElementById('podiumModalBackdrop').classList.remove('hidden');
+        }
+
+        function closePodiumModal() {
+            podiumModalState.pendingCandidate = null;
+            podiumModalState.editingIndex = null;
+            document.getElementById('podiumModalBackdrop').classList.add('hidden');
+        }
+
+        function handlePodiumBackdropClick(e) {
+            if (e.target === document.getElementById('podiumModalBackdrop')) closePodiumModal();
+        }
+
+        function switchPodiumMode(mode) { podiumModalState.mode = mode; podiumModalState.editingIndex = null; renderPodiumModal(); }
+        function switchPodiumDiff(diff) { podiumModalState.diff = diff; podiumModalState.editingIndex = null; renderPodiumModal(); }
+
+        function submitNewPodiumRecord(e) {
+            e.preventDefault();
+            if (!podiumModalState.pendingCandidate) return;
+            const athleteName = document.getElementById('newRecordPlayerInput').value.trim() || 'Athlète';
+            lastAthleteName = athleteName;
+            try { localStorage.setItem(LS_LAST_PLAYER_KEY, athleteName); } catch (err) {}
+
+            const { mode, diff, pendingCandidate } = podiumModalState;
+            pendingCandidate.name = athleteName;
+            podiumStore[mode][diff] = sortTop3([...(podiumStore[mode][diff] || []), pendingCandidate]).slice(0, 3);
+            savePodiumStore();
+
+            SFX.hit();
+            podiumModalState.pendingCandidate = null;
+            document.getElementById('newRecordBanner').classList.add('hidden');
+            renderPodiumModal();
+        }
+
+        function renderPodiumModal() {
+            const { mode, diff } = podiumModalState;
+            ['reaction', 'stroop', 'peripheral'].forEach(m => {
+                document.getElementById(`pod-mode-${m}`).className = m === mode ? 'pill-btn active-emerald' : 'pill-btn';
+            });
+            ['debutant', 'athlete', 'pro'].forEach(d => {
+                document.getElementById(`pod-diff-${d}`).className = d === diff ? 'pill-btn active-cyan' : 'pill-btn';
+            });
+
+            const entries = sortTop3(podiumStore[mode][diff] || []).slice(0, 3);
+            const first = entries[0] || null, second = entries[1] || null, third = entries[2] || null;
+            const fmtMain = (e) => `${e.avgMs} ms • ${e.score} pts`;
+
+            document.getElementById('podiumVisualStage').innerHTML = `
+                <div class="podium-col">
+                    <div class="podium-player-info">
+                        <span class="podium-medal">🥈</span>
+                        <div class="podium-name">${second ? escapeHtml(second.name) : '—'}</div>
+                        <div class="podium-metric mono">${second ? fmtMain(second) : 'Libre'}</div>
+                    </div>
+                    <div class="podium-step rank-2"><span class="step-num mono" style="color:#e2e8f0;">2</span><span class="step-label" style="color:#94a3b8;">Argent</span></div>
+                </div>
+                <div class="podium-col">
+                    <div class="podium-player-info">
+                        <span class="podium-medal first">🥇</span>
+                        <div class="podium-name gold">${first ? escapeHtml(first.name) : '—'}</div>
+                        <div class="podium-metric mono" style="color:var(--amber-300);">${first ? fmtMain(first) : 'Libre'}</div>
+                    </div>
+                    <div class="podium-step rank-1"><span class="step-num mono" style="color:var(--amber-300);">1</span><span class="step-label" style="color:var(--amber-300);">Or</span></div>
+                </div>
+                <div class="podium-col">
+                    <div class="podium-player-info">
+                        <span class="podium-medal">🥉</span>
+                        <div class="podium-name">${third ? escapeHtml(third.name) : '—'}</div>
+                        <div class="podium-metric mono">${third ? fmtMain(third) : 'Libre'}</div>
+                    </div>
+                    <div class="podium-step rank-3"><span class="step-num mono" style="color:#fbbf24;">3</span><span class="step-label" style="color:#d97706;">Bronze</span></div>
+                </div>
+            `;
+
+            const ranksMeta = [
+                { badge: '🥇 1er', cls: 'r1' },
+                { badge: '🥈 2e', cls: 'r2' },
+                { badge: '🥉 3e', cls: 'r3' }
+            ];
+
+            document.getElementById('podiumDetailedList').innerHTML = [0, 1, 2].map(idx => {
+                const entry = entries[idx], meta = ranksMeta[idx];
+                if (!entry) return `<div class="podium-row empty"><span class="rank-pill ${meta.cls} mono">${meta.badge}</span><span>Place disponible...</span></div>`;
+                if (podiumModalState.editingIndex === idx) {
+                    return `
+                        <form class="podium-row" onsubmit="saveInlineRename(event, ${idx})">
+                            <div class="podium-row-left" style="flex:1;">
+                                <span class="rank-pill ${meta.cls} mono">${meta.badge}</span>
+                                <input type="text" id="inlinePlayerRenameInput" class="text-input" style="padding:5px 9px; font-size:0.84rem;" maxlength="20" value="${escapeHtml(entry.name)}" required />
+                            </div>
+                            <button type="submit" class="btn-start" style="width:auto; height:32px; padding:0 10px; font-size:0.74rem;">OK</button>
+                        </form>
+                    `;
+                }
+                return `
+                    <div class="podium-row">
+                        <div class="podium-row-left">
+                            <span class="rank-pill ${meta.cls} mono">${meta.badge}</span>
+                            <div style="min-width:0;">
+                                <div style="font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(entry.name)}</div>
+                                <div class="mono" style="font-size:0.68rem; color:var(--text-400);">${entry.avgMs} ms • ${entry.score} pts • ${entry.accuracy}%</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-icon-edit" onclick="beginInlineRename(${idx})">✏️ Nom</button>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('resetPodiumZone').innerHTML = `<button type="button" class="btn-reset-cat" onclick="promptResetPodium()">🗑️ Réinitialiser</button>`;
+        }
+
+        function beginInlineRename(idx) {
+            podiumModalState.editingIndex = idx;
+            renderPodiumModal();
+            const inp = document.getElementById('inlinePlayerRenameInput');
+            if (inp) { inp.focus(); inp.select(); }
+        }
+
+        function saveInlineRename(e, idx) {
+            e.preventDefault();
+            const inp = document.getElementById('inlinePlayerRenameInput');
+            if (!inp) return;
+            const newName = inp.value.trim();
+            if (!newName) return;
+            const { mode, diff } = podiumModalState;
+            const sorted = sortTop3(podiumStore[mode][diff] || []);
+            if (sorted[idx]) { sorted[idx].name = newName; podiumStore[mode][diff] = sorted; savePodiumStore(); }
+            podiumModalState.editingIndex = null;
+            renderPodiumModal();
+        }
+
+        function promptResetPodium() {
+            document.getElementById('resetPodiumZone').innerHTML = `
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <button type="button" class="btn-stop" style="width:auto; height:30px; padding:0 9px; font-size:0.7rem;" onclick="confirmResetPodium()">Confirmer</button>
+                    <button type="button" class="btn-secondary" style="padding:5px 8px; font-size:0.7rem;" onclick="renderPodiumModal()">Annuler</button>
+                </div>
+            `;
+        }
+
+        function confirmResetPodium() {
+            const { mode, diff } = podiumModalState;
+            podiumStore[mode][diff] = [];
+            savePodiumStore();
+            renderPodiumModal();
+        }
+
+        function openSummaryModal({ avgMs, bestMs, accuracy, score }) {
+            document.getElementById('summaryModalSub').textContent = `${MODE_LABELS[state.mode]} • ${DIFF_CONFIG[state.difficulty].label}`;
+            document.getElementById('summaryStatsGrid').innerHTML = `
+                <div class="summary-stat-box"><div style="font-size:0.66rem; color:var(--text-400); font-weight:800;">MOYEN</div><div class="mono" style="font-size:1.1rem; font-weight:900; color:var(--cyan-400);">${avgMs !== null ? avgMs + ' ms' : '--'}</div></div>
+                <div class="summary-stat-box"><div style="font-size:0.66rem; color:var(--text-400); font-weight:800;">MEILLEUR</div><div class="mono" style="font-size:1.1rem; font-weight:900; color:var(--emerald-400);">${bestMs !== null ? bestMs + ' ms' : '--'}</div></div>
+                <div class="summary-stat-box"><div style="font-size:0.66rem; color:var(--text-400); font-weight:800;">PRÉCISION</div><div class="mono" style="font-size:1.1rem; font-weight:900; color:var(--volt-400);">${accuracy} %</div></div>
+                <div class="summary-stat-box"><div style="font-size:0.66rem; color:var(--text-400); font-weight:800;">SCORE</div><div class="mono" style="font-size:1.1rem; font-weight:900; color:var(--amber-300);">${score} pts</div></div>
+            `;
+            document.getElementById('summaryRankHint').textContent = 'Battez le temps moyen du Top 3 pour entrer sur le podium !';
+            document.getElementById('summaryModalBackdrop').classList.remove('hidden');
+        }
+
+        function closeSummaryModal() { document.getElementById('summaryModalBackdrop').classList.add('hidden'); }
+        function openPodiumFromSummary() { closeSummaryModal(); openPodiumModal({ mode: state.mode, diff: state.difficulty }); }
+        function replayFromSummary() { closeSummaryModal(); startSession(); }
+
+        window.onload = function () {
+            populateAmountSelect();
+            updateTotalRecordsBadge();
+            updateLiveDashboard();
+            renderIdleArena();
+        };
+    </script>
 </body>
 </html>
